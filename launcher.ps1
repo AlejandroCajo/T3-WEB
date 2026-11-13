@@ -23,6 +23,73 @@ if (-not (Test-Path $ToolsDir)) {
 }
 
 # -------------------------------------------------------------------------
+# 0. LIBERACIÓN AUTOMÁTICA DE PUERTOS EN CONFLICTO (4200 Y 9494)
+# -------------------------------------------------------------------------
+Write-Host "[0/5] Verificando y liberando puertos (9494 y 4200)..." -ForegroundColor Yellow
+@(9494, 4200) | ForEach-Object {
+    $targetPort = $_
+    $connections = Get-NetTCPConnection -LocalPort $targetPort -State Listen -ErrorAction SilentlyContinue
+    if ($connections) {
+        Write-Host "  -> Puerto $targetPort ocupado por un proceso previo. Cerrándolo para evitar conflictos..." -ForegroundColor Cyan
+        $connections | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object {
+            try {
+                Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue
+                Write-Host "     Proceso (PID $_) terminado." -ForegroundColor Green
+            } catch {}
+        }
+    } else {
+        Write-Host "  ✔ Puerto $targetPort libre." -ForegroundColor Green
+    }
+}
+
+# -------------------------------------------------------------------------
+# 0.5 DETECCIÓN INTELIGENTE DE BASE DE DATOS (H2 vs POSTGRESQL)
+# -------------------------------------------------------------------------
+$UsePostgres = $false
+$PgClient = New-Object System.Net.Sockets.TcpClient
+$PgRunning = $false
+try {
+    $asyncResult = $PgClient.BeginConnect("127.0.0.1", 5432, $null, $null)
+    $success = $asyncResult.AsyncWaitHandle.WaitOne(800, $false)
+    if ($success -and $PgClient.Connected) {
+        $PgRunning = $true
+        $PgClient.EndConnect($asyncResult)
+    }
+} catch {}
+finally {
+    $PgClient.Close()
+}
+
+if ($PgRunning) {
+    Write-Host ""
+    Write-Host "  [BD] ¡Se detectó PostgreSQL activo en localhost:5432!" -ForegroundColor Cyan
+    Write-Host "  ¿Deseas conectar a tu PostgreSQL local o usar H2 en memoria?" -ForegroundColor White
+    Write-Host "  -> Presiona [P] para PostgreSQL | Presiona [H] o espera 4 seg para H2 (por defecto): " -NoNewline -ForegroundColor Yellow
+    
+    $timeout = 40
+    $chosenKey = $null
+    while ($timeout -gt 0) {
+        if ([Console]::KeyAvailable) {
+            $key = [Console]::ReadKey($true)
+            $chosenKey = $key.KeyChar.ToString().ToUpper()
+            break
+        }
+        Start-Sleep -Milliseconds 100
+        $timeout--
+    }
+    Write-Host ""
+    if ($chosenKey -eq "P") {
+        $UsePostgres = $true
+        Write-Host "  ✔ Configurado para usar PostgreSQL local (localhost:5432/swapp16046)" -ForegroundColor Green
+    } else {
+        Write-Host "  ✔ Usando base de datos H2 en memoria (autocontenida y lista)" -ForegroundColor Green
+    }
+} else {
+    Write-Host "  ✔ Usando base de datos H2 en memoria (autocontenida, no requiere PostgreSQL)" -ForegroundColor Green
+}
+Write-Host ""
+
+# -------------------------------------------------------------------------
 # 1. VERIFICACIÓN / DESCARGA AUTOMÁTICA DE JAVA (JDK 21+)
 # -------------------------------------------------------------------------
 Write-Host "[1/4] Verificando entorno Java (JDK)..." -ForegroundColor Yellow
@@ -193,9 +260,15 @@ if (-not (Test-Path $FrontendModules)) {
 }
 
 # -------------------------------------------------------------------------
-# 4. LEVANTAR SERVICIOS (BACKEND Y FRONTEND)
+# 5. LEVANTAR SERVICIOS (BACKEND Y FRONTEND)
 # -------------------------------------------------------------------------
-Write-Host "[4/4] Levantando servicios en paralelo..." -ForegroundColor Yellow
+Write-Host "[5/5] Levantando servicios en paralelo..." -ForegroundColor Yellow
+
+$SpringRunCmd = if ($UsePostgres) {
+    ".\mvnw.cmd spring-boot:run -Dspring-boot.run.arguments=""--spring.datasource.url=jdbc:postgresql://localhost:5432/swapp16046 --spring.datasource.driver-class-name=org.postgresql.Driver --spring.datasource.username=postgres --spring.datasource.password=postgres --spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect"""
+} else {
+    ".\mvnw.cmd spring-boot:run"
+}
 
 $BackendScript = @"
 `$Host.UI.RawUI.WindowTitle = '[Backend] Spring Boot API - Puerto 9494'
@@ -205,7 +278,7 @@ Set-Location '$BackendDir'
 Write-Host '=====================================================' -ForegroundColor Cyan
 Write-Host '   Iniciando Backend Spring Boot en puerto 9494...   ' -ForegroundColor Cyan
 Write-Host '=====================================================' -ForegroundColor Cyan
-.\mvnw.cmd spring-boot:run
+$SpringRunCmd
 "@
 
 $FrontendScript = @"
@@ -215,7 +288,7 @@ Set-Location '$FrontendDir'
 Write-Host '=====================================================' -ForegroundColor Green
 Write-Host '      Iniciando Frontend Angular en puerto 4200...    ' -ForegroundColor Green
 Write-Host '=====================================================' -ForegroundColor Green
-npx ng serve --port 4200
+npx ng serve --port 4200 --host 0.0.0.0
 "@
 
 # Iniciar Backend en ventana propia
@@ -228,12 +301,16 @@ Write-Host ""
 Write-Host "==================================================================" -ForegroundColor Green
 Write-Host "       ¡PROYECTO LEVANTADO CON ÉXITO!                             " -ForegroundColor Green
 Write-Host "==================================================================" -ForegroundColor Green
-Write-Host "  • Frontend:    http://localhost:4200/" -ForegroundColor White
+Write-Host "  • Frontend:    http://localhost:4200/  (o http://127.0.0.1:4200/)" -ForegroundColor White
 Write-Host "  • Backend API: http://localhost:9494/" -ForegroundColor White
 Write-Host "  • Swagger UI:  http://localhost:9494/swagger-ui.html" -ForegroundColor White
 Write-Host "==================================================================" -ForegroundColor Green
 Write-Host ""
-Write-Host "Abriendo el navegador en http://localhost:4200/ ..." -ForegroundColor Cyan
+Write-Host "  [IMPORTANTE] Si tu navegador intenta forzar HTTPS por proyectos viejos:" -ForegroundColor Yellow
+Write-Host "  -> Abre una ventana en MODO INCÓGNITO en: http://localhost:4200/" -ForegroundColor Cyan
+Write-Host "  -> O ingresa directamente con la IP:     http://127.0.0.1:4200/" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "Abriendo el navegador..." -ForegroundColor Cyan
 
 Start-Sleep -Seconds 4
 Start-Process "http://localhost:4200/"

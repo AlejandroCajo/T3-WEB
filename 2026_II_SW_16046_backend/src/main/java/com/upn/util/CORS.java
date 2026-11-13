@@ -23,7 +23,12 @@ public class CORS implements Filter {
     HttpServletResponse response = (HttpServletResponse) res;
     HttpServletRequest request = (HttpServletRequest) req;
 
-    response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+    String origin = request.getHeader("Origin");
+    if (origin != null && (origin.contains("localhost:4200") || origin.contains("127.0.0.1:4200"))) {
+      response.setHeader("Access-Control-Allow-Origin", origin);
+    } else {
+      response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+    }
     response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
     response.setHeader("Access-Control-Max-Age", "3600");
     response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With");
