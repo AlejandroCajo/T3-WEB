@@ -1,0 +1,43 @@
+# ==========================================
+# Root .gitignore - Sistema Hotelero
+# ==========================================
+
+# Herramientas portables y temporales
+.tools/
+*.log
+
+# Backend (Maven & Spring Boot)
+**/target/
+**/*.class
+**/*.jar
+**/*.war
+**/*.ear
+**/data/
+
+# Frontend (Node & Angular)
+**/node_modules/
+**/.angular/
+**/dist/
+**/.vite/
+.npm
+.eslintcache
+
+# Entornos y secretos locales
+**/.env
+**/.env.local
+
+# IDEs y Editores
+.idea/
+**/.idea/
+*.iml
+.vscode/
+**/.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Archivos del sistema
+Thumbs.db
+[Dd]esktop.ini
+.DS_Store

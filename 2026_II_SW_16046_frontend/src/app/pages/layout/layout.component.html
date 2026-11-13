@@ -1,0 +1,101 @@
+<div class="app-layout-container">
+  <!-- Top App Toolbar -->
+  <mat-toolbar class="main-toolbar">
+    <button mat-icon-button (click)="sidenav.toggle()" class="menu-toggle-btn" title="Alternar menú">
+      <mat-icon>{{ sidenav.opened ? 'menu_open' : 'menu' }}</mat-icon>
+    </button>
+
+    <div class="brand-header">
+      <mat-icon class="brand-icon">hotel</mat-icon>
+      <div class="brand-titles">
+        <span class="brand-main">HOTEL REAL 5★</span>
+        <span class="brand-sub">Sistema de Gestión Hotelera</span>
+      </div>
+    </div>
+
+    <span class="toolbar-spacer"></span>
+
+    <!-- Active User & Session Menu -->
+    <div class="user-profile-badge" [matMenuTriggerFor]="menu">
+      <div class="user-avatar">
+        <mat-icon>person</mat-icon>
+      </div>
+      <div class="user-info">
+        <span class="user-role">ADMINISTRADOR</span>
+        <span class="user-name">testing1&#64;example.com</span>
+      </div>
+      <mat-icon class="dropdown-chevron">expand_more</mat-icon>
+    </div>
+
+    <mat-menu #menu="matMenu" xPosition="before" class="custom-user-menu">
+      <div class="menu-header">
+        <strong>testing1&#64;example.com</strong>
+        <span>Rol: ADMIN / DBA</span>
+      </div>
+      <mat-divider></mat-divider>
+      <button mat-menu-item routerLink="/pages/room">
+        <mat-icon>meeting_room</mat-icon>
+        <span>Habitaciones</span>
+      </button>
+      <button mat-menu-item routerLink="/pages/booking">
+        <mat-icon>book_online</mat-icon>
+        <span>Reservas</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon color="warn">logout</mat-icon>
+        <span style="color: #dc2626;">Cerrar Sesión</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <!-- Sidenav Container -->
+  <mat-sidenav-container class="sidenav-container">
+    <!-- Side Navigation Bar -->
+    <mat-sidenav #sidenav mode="side" [opened]="true" class="custom-sidenav">
+      <div class="sidenav-brand-card">
+        <img src="Icons-Land-Buildings-Hotel-5-Stars.512.png" alt="Hotel Icon" class="hotel-logo" />
+        <h3>Hotel Real 5★</h3>
+        <p>Soluciones Web UPN</p>
+      </div>
+
+      <div class="nav-section-label">MÓDULOS DEL HOTEL</div>
+
+      <div class="nav-links-list">
+        <a mat-button routerLink="/pages/room" routerLinkActive="active-nav-link" class="nav-item">
+          <mat-icon>meeting_room</mat-icon>
+          <span>Habitaciones</span>
+        </a>
+
+        <a mat-button routerLink="/pages/category" routerLinkActive="active-nav-link" class="nav-item">
+          <mat-icon>category</mat-icon>
+          <span>Categorías</span>
+        </a>
+
+        <a mat-button routerLink="/pages/customer" routerLinkActive="active-nav-link" class="nav-item">
+          <mat-icon>people</mat-icon>
+          <span>Clientes / Huéspedes</span>
+        </a>
+
+        <a mat-button routerLink="/pages/booking" routerLinkActive="active-nav-link" class="nav-item">
+          <mat-icon>book_online</mat-icon>
+          <span>Reservas (Bookings)</span>
+        </a>
+      </div>
+
+      <div class="sidenav-footer">
+        <div class="system-status">
+          <span class="status-indicator-dot"></span>
+          <span>Backend conectado (9494)</span>
+        </div>
+      </div>
+    </mat-sidenav>
+
+    <!-- Main Content Area -->
+    <mat-sidenav-content class="main-content-scroll">
+      <div class="main-content-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

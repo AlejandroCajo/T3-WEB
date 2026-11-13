@@ -1,0 +1,73 @@
+<div class="edit-container">
+  <h2>{{ $isEdit() ? 'Editar Reserva' : 'Nueva Reserva' }}</h2>
+
+  <form [formGroup]="$any(form)" (ngSubmit)="save()" class="edit-form">
+    <div [hidden]="true">
+      <input type="hidden" formControlName="idBooking" />
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Cliente</mat-label>
+        <mat-select formControlName="idCustomer">
+          @for (c of customers(); track c.idCustomer) {
+            <mat-option [value]="c.idCustomer">
+              {{ c.firstName }} {{ c.lastName }} ({{ c.documentType }}: {{ c.documentNumber }})
+            </mat-option>
+          }
+        </mat-select>
+        @if (form.get('idCustomer')?.hasError('required') && form.get('idCustomer')?.touched) {
+          <mat-error>Debe seleccionar un cliente</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Habitación</mat-label>
+        <mat-select formControlName="idRoom">
+          @for (r of rooms(); track r.idRoom) {
+            <mat-option [value]="r.idRoom">
+              Habitación Nº {{ r.numeroHabitacion }} - S/. {{ r.precio }}
+            </mat-option>
+          }
+        </mat-select>
+        @if (form.get('idRoom')?.hasError('required') && form.get('idRoom')?.touched) {
+          <mat-error>Debe seleccionar una habitación</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Fecha de Entrada (Check-In)</mat-label>
+        <input matInput type="date" formControlName="fromDate" />
+        @if (form.get('fromDate')?.hasError('required') && form.get('fromDate')?.touched) {
+          <mat-error>La fecha de entrada es obligatoria</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Fecha de Salida (Check-Out)</mat-label>
+        <input matInput type="date" formControlName="toDate" />
+        @if (form.get('toDate')?.hasError('required') && form.get('toDate')?.touched) {
+          <mat-error>La fecha de salida es obligatoria</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Observaciones / Detalles</mat-label>
+      <input matInput formControlName="details" placeholder="ej. Huésped solicita cama matrimonial y check-in tardío" />
+    </mat-form-field>
+
+    <div class="action-buttons">
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        <mat-icon>done</mat-icon>
+        <span>Guardar Reserva</span>
+      </button>
+      <button mat-button type="button" routerLink="/pages/booking">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Cancelar</span>
+      </button>
+    </div>
+  </form>
+</div>

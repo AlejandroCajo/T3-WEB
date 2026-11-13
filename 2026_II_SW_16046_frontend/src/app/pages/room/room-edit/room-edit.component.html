@@ -1,0 +1,66 @@
+<div class="edit-container">
+  <h2>{{ $isEdit() ? 'Editar Habitación' : 'Nueva Habitación' }}</h2>
+
+  <form [formGroup]="$any(form)" (ngSubmit)="save()" class="edit-form">
+    <div [hidden]="true">
+      <input type="hidden" formControlName="idRoom" />
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Número de Habitación</mat-label>
+        <input matInput formControlName="numeroHabitacion" placeholder="ej. 101, 204A" />
+        @if (form.get('numeroHabitacion')?.hasError('required') && form.get('numeroHabitacion')?.touched) {
+          <mat-error>El número de habitación es obligatorio</mat-error>
+        }
+        @if (form.get('numeroHabitacion')?.hasError('maxlength') && form.get('numeroHabitacion')?.touched) {
+          <mat-error>Máximo 10 caracteres</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Precio por Noche (S/.)</mat-label>
+        <input matInput type="number" step="0.01" formControlName="precio" placeholder="ej. 150.00" />
+        @if (form.get('precio')?.hasError('required') && form.get('precio')?.touched) {
+          <mat-error>El precio es obligatorio</mat-error>
+        }
+        @if (form.get('precio')?.hasError('min') && form.get('precio')?.touched) {
+          <mat-error>El precio debe ser mayor a 0</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Categoría</mat-label>
+        <mat-select formControlName="idCategory">
+          @for (cat of categories(); track cat.idCategory) {
+            <mat-option [value]="cat.idCategory">
+              {{ cat.name }} - {{ cat.description }}
+            </mat-option>
+          }
+        </mat-select>
+        @if (form.get('idCategory')?.hasError('required') && form.get('idCategory')?.touched) {
+          <mat-error>Debe seleccionar una categoría</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="toggle-container form-field">
+        <mat-slide-toggle formControlName="disponibilidad" color="primary">
+          {{ form.get('disponibilidad')?.value ? 'Disponible' : 'Ocupada / Mantenimiento' }}
+        </mat-slide-toggle>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        <mat-icon>done</mat-icon>
+        <span>Guardar</span>
+      </button>
+      <button mat-button type="button" routerLink="/pages/room">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Cancelar</span>
+      </button>
+    </div>
+  </form>
+</div>

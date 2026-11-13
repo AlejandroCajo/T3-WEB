@@ -1,0 +1,100 @@
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  padding: 1rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+mat-card-header {
+  padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-card-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1a237e;
+  margin-bottom: 0.25rem;
+}
+
+mat-card-subtitle {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+mat-card-content {
+  padding: 1.5rem;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 0.75rem;
+}
+
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #ffebee;
+  color: #c62828;
+  border-left: 4px solid #c62828;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.error-banner mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.button-group {
+  margin-top: 0.5rem;
+}
+
+.submit-btn {
+  height: 48px;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.demo-box {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px dashed #ccc;
+}
+
+.demo-title {
+  font-size: 0.85rem;
+  color: #777;
+  margin-bottom: 0.5rem;
+}
+
+.demo-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.demo-buttons button {
+  font-size: 0.82rem;
+  text-align: left;
+}

@@ -1,0 +1,264 @@
+.app-layout-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f1f5f9;
+}
+
+.main-toolbar {
+  background: linear-gradient(90deg, #0f172a 0%, #1e3a8a 100%) !important;
+  color: #ffffff !important;
+  height: 64px;
+  padding: 0 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+}
+
+.menu-toggle-btn {
+  color: #ffffff !important;
+  margin-right: 0.75rem;
+}
+
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+  color: #60a5fa;
+}
+
+.brand-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-main {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+}
+
+.brand-sub {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.user-profile-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.35rem 0.85rem;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.user-profile-badge:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #3b82f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-avatar mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #ffffff;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.user-role {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #93c5fd;
+  letter-spacing: 0.5px;
+}
+
+.user-name {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.dropdown-chevron {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #cbd5e1;
+}
+
+.sidenav-container {
+  flex: 1;
+  background-color: #f8fafc;
+}
+
+.custom-sidenav {
+  width: 250px;
+  background-color: #ffffff !important;
+  border-right: 1px solid #e2e8f0;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidenav-brand-card {
+  padding: 1.5rem 1rem 1rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.hotel-logo {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 0.4rem;
+}
+
+.sidenav-brand-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.sidenav-brand-card p {
+  margin: 0.2rem 0 0 0;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.nav-section-label {
+  padding: 1.2rem 1.2rem 0.5rem 1.2rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.8px;
+}
+
+.nav-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0 0.75rem;
+}
+
+.nav-item {
+  display: flex !important;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.75rem 1rem !important;
+  border-radius: 8px !important;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #475569 !important;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  width: 100%;
+  justify-content: flex-start !important;
+}
+
+.nav-item mat-icon {
+  color: #64748b;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.nav-item:hover {
+  background-color: #f1f5f9 !important;
+  color: #1e3a8a !important;
+}
+
+.nav-item:hover mat-icon {
+  color: #1e3a8a;
+}
+
+.active-nav-link {
+  background-color: #eff6ff !important;
+  color: #1d4ed8 !important;
+  font-weight: 600 !important;
+  border-left: 4px solid #2563eb;
+}
+
+.active-nav-link mat-icon {
+  color: #2563eb !important;
+}
+
+.sidenav-footer {
+  margin-top: auto;
+  padding: 1rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.system-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.status-indicator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+
+.main-content-scroll {
+  background-color: #f8fafc;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.main-content-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.menu-header {
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-header strong {
+  font-size: 0.85rem;
+  color: #1e293b;
+}
+
+.menu-header span {
+  font-size: 0.75rem;
+  color: #64748b;
+}

@@ -1,0 +1,34 @@
+<div class="edit-container">
+  <h2>{{ $isEdit() ? 'Editar Categoría' : 'Nueva Categoría' }}</h2>
+
+  <form [formGroup]="$form()" (ngSubmit)="save()" class="edit-form">
+    <div [hidden]="true">
+      <input type="hidden" formControlName="idCategory" />
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre de Categoría</mat-label>
+        <input matInput formControlName="name" placeholder="ej. SUITE, DOBLE, MATRIMONIAL" />
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Descripción</mat-label>
+        <input matInput formControlName="description" placeholder="ej. Cama King Size, vista panorámica y balcón" />
+      </mat-form-field>
+    </div>
+
+    <div class="action-buttons">
+      <button mat-raised-button color="primary" type="submit">
+        <mat-icon>done</mat-icon>
+        <span>Guardar</span>
+      </button>
+      <button mat-button type="button" routerLink="/pages/category">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Cancelar</span>
+      </button>
+    </div>
+  </form>
+</div>

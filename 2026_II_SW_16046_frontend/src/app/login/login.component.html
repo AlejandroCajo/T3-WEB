@@ -1,0 +1,76 @@
+<div class="login-wrapper">
+  <mat-card class="login-card">
+    @if (isLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+
+    <mat-card-header>
+      <mat-card-title>Sistema de Gestión Hotelera</mat-card-title>
+      <mat-card-subtitle>Ingrese sus credenciales para acceder</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form (ngSubmit)="login()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Correo o Usuario</mat-label>
+          <input
+            matInput
+            type="email"
+            name="username"
+            [(ngModel)]="username"
+            placeholder="ej. testing1@example.com"
+            required
+            [disabled]="isLoading()"
+          />
+          <mat-icon matSuffix>email</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Contraseña</mat-label>
+          <input
+            matInput
+            type="password"
+            name="password"
+            [(ngModel)]="password"
+            placeholder="••••••••"
+            required
+            [disabled]="isLoading()"
+          />
+          <mat-icon matSuffix>lock</mat-icon>
+        </mat-form-field>
+
+        @if (errorMessage()) {
+          <div class="error-banner">
+            <mat-icon>error_outline</mat-icon>
+            <span>{{ errorMessage() }}</span>
+          </div>
+        }
+
+        <div class="button-group">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            class="full-width submit-btn"
+            [disabled]="isLoading()"
+          >
+            <mat-icon>login</mat-icon>
+            Iniciar Sesión
+          </button>
+        </div>
+      </form>
+
+      <div class="demo-box">
+        <p class="demo-title">Credenciales de prueba:</p>
+        <div class="demo-buttons">
+          <button mat-stroked-button type="button" (click)="fillDemo('admin')" [disabled]="isLoading()">
+            Admin (testing1@example.com)
+          </button>
+          <button mat-stroked-button type="button" (click)="fillDemo('user')" [disabled]="isLoading()">
+            Usuario (testing2@example.com)
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
